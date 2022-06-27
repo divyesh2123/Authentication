@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -26,7 +27,14 @@ namespace Authentication
                 if (authTicket != null && !authTicket.Expired)
                 {
                     var roles = authTicket.UserData.Split(',');
-                    HttpContext.Current.User = new System.Security.Principal.GenericPrincipal(new FormsIdentity(authTicket), roles);
+                    var fd = new FormsIdentity(authTicket);
+                    Claim claim = new Claim("Role", authTicket.UserData);
+                    fd.AddClaim(claim);
+
+
+
+
+                    HttpContext.Current.User = new System.Security.Principal.GenericPrincipal(fd, roles);
                 }
             }
         }

@@ -1,11 +1,12 @@
-﻿using System.Web.Mvc;
+﻿using Authentication.filter;
+using System.Web.Mvc;
 
 namespace Authentication.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        [Authorize(Roles = "Admin,Editor")]
+        [CustomAuthorizeAttribute(Roles = "Admin")]
         public ActionResult Index()
         {
             return View();
@@ -23,6 +24,11 @@ namespace Authentication.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
+            return View();
+        }
+
+        public ActionResult UnAuthorized()
+        {
             return View();
         }
     }
